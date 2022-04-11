@@ -37,11 +37,15 @@ int main(int argc, char *argv[])
 
 	n_input_words = fill_word_array(word_array, p_input_file);
 
+	if (n_input_words == 0) {
+		fprintf(stderr, "Word list invalid\n");
+	} else {
+		/* Main questionnaire section */
+		enter_questionnaire(word_array, n_input_words);
+		free_word_array(word_array, n_input_words);
+	}
 
-	enter_questionnaire(word_array, n_input_words);
 
-
-	free_word_array(word_array, n_input_words);
 
 	fclose(p_input_file);
 	printf("Goodbye!\n");
@@ -67,9 +71,9 @@ char *cz_word(const char *line, char *word)
             break;
         }
 
+	/* Invalid line (missing tab) */
         if (i == len - 1) {
-            fprintf(stderr, "Invalid line\n");
-            exit(EXIT_FAILURE);
+            return NULL;
         }
 
         word[i] = c;
@@ -112,7 +116,7 @@ int fill_word_array(struct cz_pair *pair_pt, FILE *inputf)
 	char line[512];
 	char *pline = line;
 	/* pword will be allocated over and over, divvying out the
-	 * pointers to the structs */ 
+	 * pointers to the struct array */ 
 	char *pword;
 	char gender;
 
@@ -131,11 +135,21 @@ int fill_word_array(struct cz_pair *pair_pt, FILE *inputf)
 		pword = malloc(512*sizeof(char));
 		if (pword == NULL) {
 			fprintf(stderr, "gendercz: allocation error\n");
+			free_word_array(pair_pt, n_words);
 			exit(EXIT_FAILURE);
 		}
 
 		/* Parse the word and the gender */
 		pword = cz_word(pline, pword);
+		/* If the line was not properly formatted, pword is NULL */
+		if (pword == NULL) {
+			/* Free memory early and return 0 */
+			free(pword);
+			pword = NULL;
+			free_word_array(pair_pt, n_words);
+			fprintf(stderr, "Invalid line format (ln %d)\n", n_words + 1);
+			return 0;
+		}
 		gender = cz_gender(pline);
 
 #ifdef DEBUG
@@ -180,6 +194,7 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 {
 	struct cz_pair *current_word = pair_pt;
 	int i = 0;
+	int n_correct = 0;
 	int c;
 
 	while (i < n_elements) {
@@ -195,11 +210,14 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 			break;
 		} else if (c == current_word->gender) {
 			printf("Good job!\n");
+			n_correct++;
 		} else {
-			printf("Bad job! The correct gender was %c\n", current_word->gender);
+			printf("Bad job! The correct gender was '%c'\n", current_word->gender);
 		}
 
 		current_word++;
 		i++;
 	}
+
+	printf("\nReport: %d / %d\n", n_correct, i);
 }
