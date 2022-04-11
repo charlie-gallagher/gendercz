@@ -50,51 +50,6 @@ int main(int argc, char *argv[])
 }
 
 
-/* Read a line from the terminal
- *
- * Taken mostly from [here](https://brennan.io/2015/01/16/write-a-shell-in-c/).
- * Dynamically allocates memory for the line as its read. 
- *
- * Returns a pointer to the buffer containing the line. This is 
- * dynamically allocated, so don't forget to free() it. 
- *
- */
-char *cz_read_line(void)
-{
-	int bufsize = CZ_RL_BUFSIZE;
-	int position = 0;
-	char *buffer = malloc(sizeof(char) * bufsize);
-	int c;
-
-	if (buffer == NULL) {
-		fprintf(stderr, "gendercz: allocation error\n");
-		exit(EXIT_FAILURE);
-	}
-
-	while (1) {
-		c = getchar();
-
-		if (c == EOF || c == '\n') {
-			buffer[position] = '\0';
-			return buffer;
-		} else {
-			buffer[position] = c;
-		}
-		position++;
-
-		if (position >= bufsize) {
-			bufsize += CZ_RL_BUFSIZE;
-			buffer = realloc(buffer, bufsize);
-			if (buffer == NULL) {
-				fprintf(stderr, "gendercz: allocation error\n");
-				exit(EXIT_FAILURE);
-			}
-		}
-	}
-}
-
-
-
 
 /* Assumes char *word has enough memory allocated to contain the word
  * Returns the `word` pointer. 
@@ -144,14 +99,6 @@ char cz_gender(const char *line)
 
 
 
-void rm_newline(char *line)
-{
-	int len = strlen(line);
-	
-	if (line[len] == '\n') {
-		line[len] = '\0';
-	}
-}
 
 
 /* Fill the word array from the input file

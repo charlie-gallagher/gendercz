@@ -1,8 +1,6 @@
 #define CZ_RL_BUFSIZE 1024
-char *cz_read_line(void);
 char *cz_word(const char *line, char *word);
 char cz_gender(const char *line);
-void rm_newline(char *line);
 
 struct cz_pair
 {
