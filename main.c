@@ -44,6 +44,7 @@ int main(int argc, char *argv[])
 	free_word_array(word_array, n_input_words);
 
 	fclose(p_input_file);
+	printf("Goodbye!\n");
 
 	return 0;
 }
@@ -218,10 +219,12 @@ void free_word_array(struct cz_pair *pair_pt, int n_elements)
 	/* Free the character strings */
 	for (i = 0; i < n_elements; i++) {
 		free((pair_pt[i]).word);
+		(pair_pt[i]).word = NULL;
 	}
 
 	/* Free the struct array */
 	free(pair_pt);
+	pair_pt = NULL;
 }
 
 
@@ -233,7 +236,7 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 	int c;
 
 	while (i < n_elements) {
-		printf("%s (f/m/n): ", current_word->word);
+		printf("%s (f/m/n/q): ", current_word->word);
 
 		while ((c = getchar()) == '\n') {
 			/* Do nothing */
