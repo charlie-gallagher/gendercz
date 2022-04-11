@@ -36,17 +36,19 @@ It's pretty straightforward: `gendercz <input_file>`. Here is the output from
 the above word list. 
 
 ```
-~ $ gendercz gender_nouns.txt
-
-Rodina (m/f/n): f
+~ $ ./gendercz test_words.txt
+kuře (f/m/n/q): n
 Good job!
+nástroj (f/m/n/q): m
+Good job!
+srdce (f/m/n/q): n
+Good job!
+dno (f/m/n/q): f
+Bad job! The correct gender was n
+park (f/m/n/q): q
 
-snídaně (m/f/n): n
-Bad job! The correct gender was f.
-
-věc (m/f/n): q
+Report: 3 / 4
 Goodbye!
-
 ~ $
 ```
 
