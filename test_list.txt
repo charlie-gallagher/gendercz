@@ -1,0 +1,11 @@
+kolega	m
+zvíře	n
+umělec	m
+společnost	f
+trh	m
+žízeň	f
+věc	f
+slunce	n
+nebe	n
+srdce	n
+siť	f
