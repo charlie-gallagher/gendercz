@@ -198,7 +198,7 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 	int c;
 
 	while (i < n_elements) {
-		printf("%s (f/m/n/q): ", current_word->word);
+		printf("\x1b[1m%s%s %s (f/m/n/q):%s ", current_word->word, PLAINTEXT, DIMTEXT, PLAINTEXT);
 
 		while ((c = getchar()) == '\n') {
 			/* Do nothing */
@@ -209,10 +209,10 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 		if (c == 'q') {
 			break;
 		} else if (c == current_word->gender) {
-			printf("Good job!\n");
+			printf("%sGood job!%s\n", GREEN, PLAINTEXT);
 			n_correct++;
 		} else {
-			printf("Bad job! The correct gender was '%c'\n", current_word->gender);
+			printf("%sBad job!%s The correct gender was '%c'\n", RED, PLAINTEXT, current_word->gender);
 		}
 
 		current_word++;
