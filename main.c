@@ -10,12 +10,11 @@ int main(int argc, char *argv[])
 	/* Print the help if no file given */
 	if (argc == 1) {
 		printf("Quiz yourself on the genders of words!\n");
-		printf("gendercz [<file>]\n\n");
+		printf("Usage: gendercz [<file>]\n\n");
 		return 0;
 	}
 
 	/* Otherwise use the given file */
-	int n_input_words = 0;
 	FILE *p_input_file = fopen(argv[1], "r");
 	if (p_input_file == NULL) {
 		fprintf(stderr, "Invalid input file\n");
@@ -23,9 +22,6 @@ int main(int argc, char *argv[])
 	}
 
 	/* The pointer is defined but nothing allocated */
-	/* But since I want an array of cz_pairs, do I need to do something
-	 * different with the struct declaration?
-	 */
 	struct cz_pair *word_array;
 
 	/* Initially allocate 100 structs to the list */
@@ -35,6 +31,7 @@ int main(int argc, char *argv[])
 	}
 
 
+	int n_input_words = 0;
 	n_input_words = fill_word_array(word_array, p_input_file);
 
 	if (n_input_words == 0) {
@@ -198,7 +195,7 @@ void enter_questionnaire(struct cz_pair *pair_pt, int n_elements)
 	int c;
 
 	while (i < n_elements) {
-		printf("\x1b[1m%s%s %s (f/m/n/q):%s ", current_word->word, PLAINTEXT, DIMTEXT, PLAINTEXT);
+		printf("\x1b[1m%s%s %s (f/m/n/q)%s: ", current_word->word, PLAINTEXT, DIMTEXT, PLAINTEXT);
 
 		while ((c = getchar()) == '\n') {
 			/* Do nothing */
